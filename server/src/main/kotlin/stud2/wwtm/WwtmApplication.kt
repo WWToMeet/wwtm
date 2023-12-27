@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class WwtmApplication
 
 fun main(args: Array<String>) {
-	runApplication<WwtmApplication>(*args)
+    runApplication<WwtmApplication>(*args)
 }
