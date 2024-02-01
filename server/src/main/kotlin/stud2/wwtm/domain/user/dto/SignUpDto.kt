@@ -7,9 +7,7 @@ data class SignUpRequest(
     val nickname: String,
     val password: String,
 ) {
-    init {
-    	System.out.println("SignUpRequest: $username, $nickname, $password")
-    }
+
     fun toEntity() = User(
         id = null,
         hashId = null,
