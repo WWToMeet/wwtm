@@ -14,17 +14,21 @@ class User(
     var hashId: String? = null,
 
     @Column
-    var username: String? = null,
+    var username: String,
 
     @Column
-    var nickname: String? = null,
+    var nickname: String,
 
     @Column
-    var password: String? = null,
+    var password: String,
 
 //    @Column
 //    var locations: Location? = null,
 
 //    @Column
 //    var schedule: Schedule? = null,
-) : BaseEntity()
+) : BaseEntity() {
+    init {
+    	this.hashId = createdHashId(this.username)
+    }
+}
