@@ -3,7 +3,9 @@ package stud2.wwtm.domain.user.service
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import stud2.wwtm.domain.user.dto.SignUpRequest
+import stud2.wwtm.domain.user.error.UserErrorCode
 import stud2.wwtm.domain.user.repository.UserRepository
+import stud2.wwtm.global.exception.BusinessException
 
 @Service
 @Transactional(readOnly = true)
@@ -13,7 +15,7 @@ class UserService (
     @Transactional
     fun singUp(singUpRequest: SignUpRequest) {
         userRepository.findByUsername(singUpRequest.username)
-            ?.let { throw IllegalArgumentException("이미 존재하는 사용자입니다.") }
+            ?.let { throw BusinessException(UserErrorCode.CONFLICT_ALREADY_EXIST) }
             ?: userRepository.save(singUpRequest.toEntity()).id
     }
 }
