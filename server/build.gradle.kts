@@ -41,6 +41,9 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
+    // logging
+    implementation ("io.github.microutils:kotlin-logging:3.0.5")
+
     // Test framework - Kotest
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     // Assertion library

@@ -3,7 +3,9 @@ package stud2.wwtm.global.auth.jwt
 import io.jsonwebtoken.*
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
+import mu.KotlinLogging
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -14,25 +16,33 @@ import java.util.*
 
 @Component
 class JwtTokenProvider (
-    private val jwtProperties: JwtProperties
+    private val jwtProperties: JwtProperties,
+    private val authenticationManagerBuilder: AuthenticationManagerBuilder,
 ) {
+    val log = KotlinLogging.logger {}
+
     private val key by lazy {
         Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.secret))
     }
 
-    fun createToken(authentication: Authentication): TokenInfo {
-        val authorities: String = authentication.authorities.joinToString(",", transform = GrantedAuthority::getAuthority)
+    fun createToken(userHashId: String, password: String): TokenInfo {
         val now = Date()
         val accessTokenExpirationDate = Date(now.time + jwtProperties.expirationTime)
 
         val accessToken = Jwts.builder()
-            .setSubject(authentication.principal as String)
-            .claim("authorities", authorities)
+            .setSubject(userHashId)
+            .claim("userInfo", userHashId)
             .setIssuedAt(now)
             .setExpiration(accessTokenExpirationDate)
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
         return TokenInfo("Bearer", accessToken)
+    }
+
+    private fun createAuthentication(userHashId: String, password: String): Authentication {
+        val authenticationToken = UsernamePasswordAuthenticationToken(userHashId, password)
+
+        return authenticationManagerBuilder.`object`.authenticate(authenticationToken)
     }
 
     fun getAuthentication(token: String): Authentication {

@@ -8,11 +8,11 @@ data class SignUpRequest(
     val password: String,
 ) {
 
-    fun toEntity() = User(
+    fun toEntity(encodePassword: String) = User(
         id = null,
         hashId = null,
         username = username,
         nickname = nickname,
-        password = password,
+        password = encodePassword,
     )
 }

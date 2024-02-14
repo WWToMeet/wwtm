@@ -15,14 +15,6 @@ class CustomUserDetails (
         if (user == null) { listOf(SimpleGrantedAuthority("GUEST")) } else { listOf(SimpleGrantedAuthority("USER")) }
     )
 
-    fun getHashId(): String {
-        return hashId
-    }
-
-    fun getNickname(): String {
-        return nickname
-    }
-
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return grantedAuthorities.toMutableList()
     }

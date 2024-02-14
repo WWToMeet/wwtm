@@ -1,5 +1,6 @@
 package stud2.wwtm.domain.user.controller
 
+import mu.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -15,12 +16,13 @@ import java.net.URI
 class UserController (
     private val userService: UserService,
 ) {
+    val log = KotlinLogging.logger{}
 
     @PostMapping
     fun signUp(@RequestBody singUpRequest: SignUpRequest): ResponseEntity<CommonResponse> {
-        userService.singUp(singUpRequest)
+        val tokenInfo = userService.singUp(singUpRequest)
         var uri: URI = URI.create("/api/me")
 
-        return ResponseEntity.created(uri).body(CommonResponse())
+        return ResponseEntity.created(uri).body(CommonResponse(data = tokenInfo))
     }
 }
