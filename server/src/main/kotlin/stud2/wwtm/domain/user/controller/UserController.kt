@@ -1,5 +1,6 @@
 package stud2.wwtm.domain.user.controller
 
+import jakarta.validation.Valid
 import mu.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -19,7 +20,7 @@ class UserController (
     val log = KotlinLogging.logger{}
 
     @PostMapping
-    fun signUp(@RequestBody singUpRequest: SignUpRequest): ResponseEntity<CommonResponse> {
+    fun signUp(@RequestBody @Valid singUpRequest: SignUpRequest): ResponseEntity<CommonResponse> {
         val tokenInfo = userService.singUp(singUpRequest)
         var uri: URI = URI.create("/api/me")
 
