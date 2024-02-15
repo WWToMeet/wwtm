@@ -1,4 +1,4 @@
-package stud2.wwtm.global.auth.model
+package stud2.wwtm.domain.auth.model
 
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority

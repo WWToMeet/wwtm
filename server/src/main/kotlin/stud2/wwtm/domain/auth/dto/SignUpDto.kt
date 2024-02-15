@@ -1,4 +1,4 @@
-package stud2.wwtm.domain.user.dto
+package stud2.wwtm.domain.auth.dto
 
 import jakarta.validation.constraints.NotBlank
 import stud2.wwtm.domain.user.model.User
