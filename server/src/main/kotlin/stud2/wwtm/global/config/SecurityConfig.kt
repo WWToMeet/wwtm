@@ -10,13 +10,15 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import stud2.wwtm.global.auth.jwt.JwtAuthenticationFilter
-import stud2.wwtm.global.auth.jwt.JwtTokenProvider
+import stud2.wwtm.domain.auth.AuthExceptionHandler
+import stud2.wwtm.domain.auth.jwt.JwtAuthenticationFilter
+import stud2.wwtm.domain.auth.jwt.JwtTokenProvider
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val jwtTokenProvider: JwtTokenProvider
+    private val jwtTokenProvider: JwtTokenProvider,
+    private val authExceptionHandler: AuthExceptionHandler,
 ) {
 
     @Bean
@@ -27,8 +29,9 @@ class SecurityConfig(
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)}
             .authorizeHttpRequests{
                 it.requestMatchers(HttpMethod.POST, "/api/users").anonymous()
-                    .anyRequest().permitAll()
-            }
+                    .anyRequest().permitAll() }
+            .exceptionHandling { it.authenticationEntryPoint(authExceptionHandler)
+                .accessDeniedHandler(authExceptionHandler) }
             .addFilterBefore(
                 JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter::class.java )
 

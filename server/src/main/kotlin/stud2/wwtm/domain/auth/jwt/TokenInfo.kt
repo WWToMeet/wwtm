@@ -1,4 +1,4 @@
-package stud2.wwtm.global.auth.jwt
+package stud2.wwtm.domain.auth.jwt
 
 data class TokenInfo(
     val grantType: String,
